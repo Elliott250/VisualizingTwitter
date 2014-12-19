@@ -20,18 +20,10 @@ var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
   
   }));
   
-  // Load our custom `lakes` plugin to draw lakes; see below.
-  globe.loadPlugin(lakes({
-    fill: '#000080'
-  }));
-  
-  // The `` plugin draws animated pings on the globe.
+  globe.loadPlugin(lakes({ fill: '#000080'}));
   globe.loadPlugin(planetaryjs.plugins.pings());
-  // The `zoom` and `drag` plugins enable
-  // manipulating the globe with the mouse.
-  globe.loadPlugin(planetaryjs.plugins.zoom({
-    scaleExtent: [100, 300]
-  }));
+  globe.loadPlugin(planetaryjs.plugins.zoom({scaleExtent: [100, 300]}));
+  
   globe.loadPlugin(planetaryjs.plugins.drag({
     // Dragging the globe should pause the
     // automatic rotation until we release the mouse.
@@ -42,13 +34,12 @@ var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
       this.plugins.autorotate.resume();
     }
   }));
+  
   // Set up the globe's initial scale, offset, and rotation.
   globe.projection.scale(175).translate([175, 175]).rotate([0, -10, 0]);
 
-
-
-  
-  ss.event.on('tweet', function(message){                                                                                                                                                                                                      
+/*___________________Code to interact with Twitter API from Server_______________*/ 
+  ss.event.on('tweet', function(message) {                                                                                                                                                                                                      
     var location = message.coordinates.coordinates;
  	console.log(location[1]);
 	console.log(location[0]);
@@ -56,12 +47,12 @@ var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
   });
 
   function drawTweetOnGlobe(lat, lng) {
-
     var color = "red";
 	console.log(lat);	
-	globe.plugins.pings.add(lng, lat, { color: color, ttl: 1000, angle: 1.5 });
-  
+	globe.plugins.pings.add(lng, lat, { color: color, ttl: 50000, angle: 1.5 });
   }
+ /*__________End of Code to interact with Twitter API from Server_______________*/ 
+ 
   var canvas = document.getElementById('rotatingGlobe');
   // Special code to handle high-density displays (e.g. retina, some phones)
   // In the future, Planetary.js will handle this by itself (or via a plugin).
