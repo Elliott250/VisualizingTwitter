@@ -1,6 +1,6 @@
 // in any client-side module
 
-var i = ss.rpc('twitterStream.tweet','hello');
+var i = ss.rpc('twitterStream.allGeoTweets');
 /*
 ss.event.on('tweet', function(message){
   console.log(message);
@@ -22,10 +22,13 @@ ss.event.on('tweet', function(message){
     land:     { fill:   '#339966' },
     borders:  { stroke: '#008000' }
   }));
+  
   // Load our custom `lakes` plugin to draw lakes; see below.
   globe.loadPlugin(lakes({
     fill: '#000080'
   }));
+  globe.loadPlugin(planetaryjs.plugins.earth({
+  	topojson: { file: "countries.json" }
   // The `pings` plugin draws animated pings on the globe.
   globe.loadPlugin(planetaryjs.plugins.pings());
   // The `zoom` and `drag` plugins enable
@@ -46,21 +49,23 @@ ss.event.on('tweet', function(message){
   // Set up the globe's initial scale, offset, and rotation.
   globe.projection.scale(175).translate([175, 175]).rotate([0, -10, 0]);
 
+
+
   // Every few hundred milliseconds, we'll draw another random ping.
-  var colors = ['red', 'yellow', 'white', 'orange', 'green', 'cyan', 'pink'];                                                                                                                                                                 
+  
 ss.event.on('tweet', function(message){                                                                                                                                                                                                      
-    var tweet = message.text;
-    
-     var location = message.coordinates.coordinates;
+ 
+  var tweet = message.text.toLowerCase();
+ 	var location = message.coordinates.coordinates;
   var colors = ['red', 'yellow', 'white', 'orange', 'green', 'cyan', 'pink'];
-if(tweet.includes("h") ){   
-setInterval(function() {
-    var lat = location[1]
-    var lng = location[0]
-    var color = colors[Math.floor(Math.random() * colors.length)];
-    globe.plugins.pings.add(lng, lat, { color: color, ttl: 2000, angle: Math.random() * 10 });
-  }, 150);
-}
+  //if(tweet.indexOf("obama") !== -1){   
+    setInterval(function() {
+	var lat = location[1];
+	var lng = location[0];
+	var color = colors[Math.floor(Math.random() * colors.length)];
+	globe.plugins.pings.add(lng, lat, { color: color, ttl: 2000, angle: Math.random() * 10 });
+    }, 150);
+  //}
 
 });
   var canvas = document.getElementById('rotatingGlobe');
@@ -127,6 +132,7 @@ setInterval(function() {
           planet.path.context(context)(lakes);
           context.fillStyle = options.fill || 'black';
           context.fill();
+          
         });
       });
     };

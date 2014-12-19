@@ -9,31 +9,59 @@ exports.actions = function(req, res, ss){
         access_token_key: '353231115-pO9VD0p299FKre0nuorO3veklPgVejNYwkO5Gkso',
         access_token_secret: 'MGFWwEWaxS77K4UYXL7WISXWFmB2f7lUbZgM0XEEL6j5d'
     });
-    var params = {
-	locations: [-180,-90,180,90]
-    }
+
 
 
 
 
     return {
+  
+      
+      allGeoTweets: function(){
 
-      tweet: function(word){
-     
-      stream.stream(params);
-      stream.on('data', function(json) {
-	 // var jObj = JSON.parse(json);
-	 // jObj.text
-	  // console.log(json);
-         
-	      
-	      ss.publish.all('tweet', json);
-	 
+        var params = { locations: [-180,-90,180,90] }
+        stream.stream(params);
+
+        stream.on('data', function(json) {
+	
+	      if(json.hasOwnProperty("coordinates") && json.coordinates != null) {
+	        if( (json.coordinates).hasOwnProperty("coordinates") && json.coordinates.coordinates != null) { 
+	          ss.publish.all('tweet', json);
+	          console.log(json);
+	        }
+	      }
 	       
-	  res(json);
+	      res(json);
   
       });
   }
-
+   /*
+    tweetsByWordAndGeo: function(word){
+    
+      var params = { track: word }
+      stream.stream(params);
+      
+      stream.on('data', function(json) {
+	
+	      if(json.hasOwnProperty("coordinates") && json.coordinates != null) {
+	        if( (json.coordinates).hasOwnProperty("coordinates") && json.coordinates.coordinates != null) { 
+	          ss.publish.all('tweet', json);
+	        }
+	      }
+	       
+	      res(json);
+  
+      });
+    }
+    */
+    
+       
+    
   }
+  
+  
+    
+  
+  
+  
 }

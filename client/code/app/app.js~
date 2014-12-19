@@ -53,7 +53,7 @@ ss.event.on('tweet', function(message){
     
      var location = message.coordinates.coordinates;
   var colors = ['red', 'yellow', 'white', 'orange', 'green', 'cyan', 'pink'];
-if(tweet.includes("obama") ){   
+if(tweet.includes("h") ){   
 setInterval(function() {
     var lat = location[1]
     var lng = location[0]
