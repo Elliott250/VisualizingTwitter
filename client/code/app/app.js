@@ -27,8 +27,7 @@ ss.event.on('tweet', function(message){
   globe.loadPlugin(lakes({
     fill: '#000080'
   }));
-  globe.loadPlugin(planetaryjs.plugins.earth({
-  	topojson: { file: "countries.json" }
+  
   // The `pings` plugin draws animated pings on the globe.
   globe.loadPlugin(planetaryjs.plugins.pings());
   // The `zoom` and `drag` plugins enable
@@ -137,4 +136,15 @@ ss.event.on('tweet', function(message){
       });
     };
   };
+	/*
+	d3.json('countries.json', function(err, data) {
+		if(err) {
+			alert("contries didnt Load");
+			return;
+	    } else {
+	    	alert("countries did Load");
+	    	return;
+		}
+	}
+	*/
 })();
