@@ -1,6 +1,20 @@
-// in any client-side module
 
-var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
+
+/*_________________Form Code___________________________________________*/
+var searchForm = document.searchForm;
+searchForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var i = ss.rpc('twitterStream.tweetsByWordAndGeo', searchForm.elements[0].value);
+  //console.log(searchForm.elements[0].value);
+ }
+);
+
+var stopButton = document.getElementById('topStream');
+stopButton.addEventListener('click', function() {
+	ss.rpc('twitterStream.killStream');
+ });
+/*______________________Globe Visualization________________________________*/
+
 
 (function() {
   var globe = planetaryjs.planet();
@@ -22,7 +36,7 @@ var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
   
   globe.loadPlugin(lakes({ fill: '#000080'}));
   globe.loadPlugin(planetaryjs.plugins.pings());
-  globe.loadPlugin(planetaryjs.plugins.zoom({scaleExtent: [100, 300]}));
+  globe.loadPlugin(planetaryjs.plugins.zoom({scaleExtent: [300, 500]}));
   
   globe.loadPlugin(planetaryjs.plugins.drag({
     // Dragging the globe should pause the
@@ -36,13 +50,13 @@ var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
   }));
   
   // Set up the globe's initial scale, offset, and rotation.
-  globe.projection.scale(175).translate([175, 175]).rotate([0, -10, 0]);
+ // globe.projection.scale(175).translate([175, 175]).rotate([0, -10, 0]);
+  globe.projection.scale(350).translate([350, 350]).rotate([0, -10, 0]);
 
 /*___________________Code to interact with Twitter API from Server_______________*/ 
-  ss.event.on('tweet', function(message) {                                                                                                                                                                                                      
+  ss.event.on('tweet', function(message) {
+  	console.log(message.text);                                                                                                                                                                                                      
     var location = message.coordinates.coordinates;
- 	console.log(location[1]);
-	console.log(location[0]);
  	drawTweetOnGlobe(location[1],location[0]);
   });
 
