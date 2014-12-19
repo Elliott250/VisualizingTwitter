@@ -1,11 +1,6 @@
 // in any client-side module
 
-var i = ss.rpc('twitterStream.allGeoTweets');
-/*
-ss.event.on('tweet', function(message){
-  console.log(message);
-});
-*/
+var i = ss.rpc('twitterStream.tweetsByWordAndGeo', 'fuck');
 
 (function() {
   var globe = planetaryjs.planet();
@@ -17,10 +12,12 @@ ss.event.on('tweet', function(message){
   // Note that we're loading a special TopoJSON file
   // (world-110m-withlakes.json) so we can render lakes.
   globe.loadPlugin(planetaryjs.plugins.earth({
+    
     topojson: { file:   'worldLakes.json' },
     oceans:   { fill:   '#000080' },
     land:     { fill:   '#339966' },
     borders:  { stroke: '#008000' }
+  
   }));
   
   // Load our custom `lakes` plugin to draw lakes; see below.
@@ -28,7 +25,7 @@ ss.event.on('tweet', function(message){
     fill: '#000080'
   }));
   
-  // The `pings` plugin draws animated pings on the globe.
+  // The `` plugin draws animated pings on the globe.
   globe.loadPlugin(planetaryjs.plugins.pings());
   // The `zoom` and `drag` plugins enable
   // manipulating the globe with the mouse.
@@ -50,23 +47,21 @@ ss.event.on('tweet', function(message){
 
 
 
-  // Every few hundred milliseconds, we'll draw another random ping.
   
-ss.event.on('tweet', function(message){                                                                                                                                                                                                      
- 
-  var tweet = message.text.toLowerCase();
- 	var location = message.coordinates.coordinates;
-  var colors = ['red', 'yellow', 'white', 'orange', 'green', 'cyan', 'pink'];
-  //if(tweet.indexOf("obama") !== -1){   
-    setInterval(function() {
-	var lat = location[1];
-	var lng = location[0];
-	var color = colors[Math.floor(Math.random() * colors.length)];
-	globe.plugins.pings.add(lng, lat, { color: color, ttl: 2000, angle: Math.random() * 10 });
-    }, 150);
-  //}
+  ss.event.on('tweet', function(message){                                                                                                                                                                                                      
+    var location = message.coordinates.coordinates;
+ 	console.log(location[1]);
+	console.log(location[0]);
+ 	drawTweetOnGlobe(location[1],location[0]);
+  });
 
-});
+  function drawTweetOnGlobe(lat, lng) {
+
+    var color = "red";
+	console.log(lat);	
+	globe.plugins.pings.add(lng, lat, { color: color, ttl: 1000, angle: 1.5 });
+  
+  }
   var canvas = document.getElementById('rotatingGlobe');
   // Special code to handle high-density displays (e.g. retina, some phones)
   // In the future, Planetary.js will handle this by itself (or via a plugin).

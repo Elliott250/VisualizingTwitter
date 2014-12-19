@@ -31,11 +31,11 @@ exports.actions = function(req, res, ss){
 	        }
 	      }
 	       
-	      res(json);
+	      //res(json);
   
       });
-  }
-   /*
+  },
+   
     tweetsByWordAndGeo: function(word){
     
       var params = { track: word }
@@ -49,11 +49,11 @@ exports.actions = function(req, res, ss){
 	        }
 	      }
 	       
-	      res(json);
+	      //res(json);
   
       });
     }
-    */
+    
     
        
     
