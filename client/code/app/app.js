@@ -1,13 +1,8 @@
 
 
 /*_________________Form Code___________________________________________*/
-var searchForm = document.searchForm;
-searchForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  var i = ss.rpc('twitterStream.tweetsByWordAndGeo', searchForm.elements[0].value);
-  //console.log(searchForm.elements[0].value);
- }
-);
+var i = ss.rpc('twitterStream.allGeoTweets');
+
 
 var stopButton = document.getElementById('topStream');
 stopButton.addEventListener('click', function() {
@@ -54,17 +49,51 @@ stopButton.addEventListener('click', function() {
   globe.projection.scale(350).translate([350, 350]).rotate([0, -10, 0]);
 
 /*___________________Code to interact with Twitter API from Server_______________*/ 
+  var searchForm = document.searchForm;
+  var searchValue = undefined; 
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      searchValue = searchForm.elements[0].value;
+ });
+  var printCountry = 0
   ss.event.on('tweet', function(message) {
-  	console.log(message.text);                                                                                                                                                                                                      
-    var location = message.coordinates.coordinates;
- 	drawTweetOnGlobe(location[1],location[0]);
+    if(hasCountry(message) && ++printCountry == 20){
+      console.log(getCountry(message));
+      printCountry = 0;
+    }
+    if(searchValue !== undefined && hasCountry(message)){
+
+         if(searchValue == getCountry(message)){
+          var location = message.coordinates.coordinates;
+          drawTweetOnGlobe(location[1],location[0]);
+         }
+ 	 // drawTweetOnGlobe(location[1],location[0]);
+    }
   });
 
   function drawTweetOnGlobe(lat, lng) {
     var color = "red";
-	console.log(lat);	
-	globe.plugins.pings.add(lng, lat, { color: color, ttl: 50000, angle: 1.5 });
+	  console.log(lat);	
+ 	  globe.plugins.pings.add(lng, lat, { color: color, ttl: 9000, angle: 1.5 });
   }
+
+  function hasCountry(obj) {
+    if( obj.hasOwnProperty("place") &&
+        obj.place !== undefined &&
+        obj.place.hasOwnProperty("country") &&
+        obj.place.country !== undefined ) {
+
+          return true;
+        }
+     return false;
+  }
+
+
+
+  function getCountry(obj) {
+    return obj.place.country; 
+  }
+
  /*__________End of Code to interact with Twitter API from Server_______________*/ 
  
   var canvas = document.getElementById('rotatingGlobe');

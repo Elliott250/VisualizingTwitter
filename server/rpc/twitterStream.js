@@ -23,14 +23,16 @@ exports.actions = function(req, res, ss){
 		        
         stream.stream(params);
         
-        
+        var tweetCount = 0;
         stream.on('data', function(json) {
-	
+	       
 	      if(json.hasOwnProperty("coordinates") && json.coordinates != null) {
 	        if( (json.coordinates).hasOwnProperty("coordinates") && json.coordinates.coordinates != null) { 
-
-	    ss.publish.all('tweet', json);
-	    console.log(json);
+              ++tweetCount;
+	           if(tweetCount == 3){
+              ss.publish.all('tweet', json);
+	            tweetCount = 0;
+             }
 	        }
 	      }
       });

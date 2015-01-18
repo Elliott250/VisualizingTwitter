@@ -25,7 +25,7 @@ if (ss.env === 'production')
 
 // Start web server
 var server = http.Server(ss.http.middleware);
-server.listen(3001);
+server.listen(3000);
 
 // Start SocketStream
 ss.start(server);
