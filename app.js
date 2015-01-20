@@ -7,7 +7,7 @@ var http = require('http'),
 ss.client.define('main', {
   view: 'app.html',
   css:  ['libs/reset.css', 'app.css'],
-  code: ['libs/jquery.min.js','libs/d3.v3.min.js','libs/topojson.v1.min.js','libs/planetaryjs.min.js','app'],
+  code: ['libs/jquery.min.js','libs/d3.v3.min.js','libs/topojson.v1.min.js','libs/planetaryjs.min.js','app','libs/tweethandle.js','libs/jquery.min.js'],
   tmpl: '*'
 });
 

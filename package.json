@@ -1,6 +1,6 @@
 {
   "name": "twitterSearch",
-  "description": "An awesome real time application",
+  "description": "Search the web for tweets",
   "version": "0.0.1",
   "author": "Elliott Asher <elliott250@gmail.com>",
   "private": true,
@@ -8,7 +8,7 @@
   "dependencies": {
     "socketstream": "0.3.x",
     "ss-hogan": "0.1.x",
-    "topojson": "1.6.X",
+    "topojson": "1.6.x",
     "user-stream": "0.0.7",
     "syntax-error": "1.1.x", 
     "fs": "0.0.2"

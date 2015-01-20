@@ -2,19 +2,13 @@
 
 /*_________________Form Code___________________________________________*/
 var i = ss.rpc('twitterStream.allGeoTweets');
-
-
-var stopButton = document.getElementById('topStream');
-stopButton.addEventListener('click', function() {
-	ss.rpc('twitterStream.killStream');
- });
 /*______________________Globe Visualization________________________________*/
 
 
 (function() {
   var globe = planetaryjs.planet();
   // Load our custom `autorotate` plugin; see below.
-  globe.loadPlugin(autorotate(10));
+  //globe.loadPlugin(autorotate(10));
   // The `earth` plugin draws the oceans and the land; it's actually
   // a combination of several separate built-in plugins.
   //
@@ -28,11 +22,9 @@ stopButton.addEventListener('click', function() {
     borders:  { stroke: '#008000' }
   
   }));
-  
   globe.loadPlugin(lakes({ fill: '#000080'}));
   globe.loadPlugin(planetaryjs.plugins.pings());
   globe.loadPlugin(planetaryjs.plugins.zoom({scaleExtent: [300, 500]}));
-  
   globe.loadPlugin(planetaryjs.plugins.drag({
     // Dragging the globe should pause the
     // automatic rotation until we release the mouse.
@@ -43,56 +35,41 @@ stopButton.addEventListener('click', function() {
       this.plugins.autorotate.resume();
     }
   }));
-  
-  // Set up the globe's initial scale, offset, and rotation.
- // globe.projection.scale(175).translate([175, 175]).rotate([0, -10, 0]);
-  globe.projection.scale(350).translate([350, 350]).rotate([0, -10, 0]);
+ globe.projection.scale(350).translate([350, 350]).rotate([0, -10, 0]);
 
 /*___________________Code to interact with Twitter API from Server_______________*/ 
-  var searchForm = document.searchForm;
+  var countrySearch = document.countrySearch;
   var searchValue = undefined; 
-    searchForm.addEventListener('submit', function(e) {
+  
+  countrySearch.addEventListener('submit', function(e) {
       e.preventDefault();
-      searchValue = searchForm.elements[0].value;
+      //searchValue = countrySearch.elements[0].value;
+      searchValue = $('#countryVal').val();
  });
-  var printCountry = 0
-  ss.event.on('tweet', function(message) {
-    if(hasCountry(message) && ++printCountry == 20){
-      console.log(getCountry(message));
-      printCountry = 0;
-    }
-    if(searchValue !== undefined && hasCountry(message)){
 
-         if(searchValue == getCountry(message)){
+  var countryList = new Object();
+
+  ss.event.on('tweet', function(message) {
+    if(hasCountry(message)){
+      var country = getCountry(message);
+      
+      if(!countryList.hasOwnProperty(country)){
+            countryList[country] = country; 
+            $('#countryVal').append('<option>'+country+'</option>');
+      }
+
+      if(searchValue == getCountry(message)){
           var location = message.coordinates.coordinates;
           drawTweetOnGlobe(location[1],location[0]);
-         }
- 	 // drawTweetOnGlobe(location[1],location[0]);
-    }
+      }
+ 	  }
   });
 
-  function drawTweetOnGlobe(lat, lng) {
-    var color = "red";
-	  console.log(lat);	
- 	  globe.plugins.pings.add(lng, lat, { color: color, ttl: 9000, angle: 1.5 });
-  }
 
-  function hasCountry(obj) {
-    if( obj.hasOwnProperty("place") &&
-        obj.place !== undefined &&
-        obj.place.hasOwnProperty("country") &&
-        obj.place.country !== undefined ) {
-
-          return true;
-        }
-     return false;
-  }
-
-
-
-  function getCountry(obj) {
-    return obj.place.country; 
-  }
+function drawTweetOnGlobe(lat, lng) {
+         var color = "red";
+         globe.plugins.pings.add(lng, lat, { color: color, ttl: 3000, angle: 1.5 });
+       }
 
  /*__________End of Code to interact with Twitter API from Server_______________*/ 
  
@@ -165,15 +142,5 @@ stopButton.addEventListener('click', function() {
       });
     };
   };
-	/*
-	d3.json('countries.json', function(err, data) {
-		if(err) {
-			alert("contries didnt Load");
-			return;
-	    } else {
-	    	alert("countries did Load");
-	    	return;
-		}
-	}
-	*/
+
 })();
