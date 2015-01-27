@@ -1,6 +1,6 @@
 
 
-/*_________________Form Code___________________________________________*/
+/*_________________Call Function on server__________________________________*/
 var i = ss.rpc('twitterStream.allGeoTweets');
 /*______________________Globe Visualization________________________________*/
 
@@ -38,28 +38,30 @@ var i = ss.rpc('twitterStream.allGeoTweets');
  globe.projection.scale(350).translate([350, 350]).rotate([0, -10, 0]);
 
 /*___________________Code to interact with Twitter API from Server_______________*/ 
+  //This Block of code includes custom functions from 
+  // ../libs/tweethandle.js
+
   var countrySearch = document.countrySearch;
   var searchValue = undefined; 
   
   countrySearch.addEventListener('submit', function(e) {
       e.preventDefault();
-      //searchValue = countrySearch.elements[0].value;
       searchValue = $('#countryVal').val();
  });
 
   var countryList = new Object();
-
-  ss.event.on('tweet', function(message) {
-    if(hasCountry(message)){
-      var country = getCountry(message);
+  ss.event.on('tweet', function(tweet) {
+    if(hasCountry(tweet)){
+      var country = getCountry(tweet);
       
+      //Populate list of contries to choose from dynamically
       if(!countryList.hasOwnProperty(country)){
             countryList[country] = country; 
             $('#countryVal').append('<option>'+country+'</option>');
       }
 
-      if(searchValue == getCountry(message)){
-          var location = message.coordinates.coordinates;
+      if(searchValue == getCountry(tweet)){
+          var location = tweet.coordinates.coordinates;
           drawTweetOnGlobe(location[1],location[0]);
       }
  	  }
