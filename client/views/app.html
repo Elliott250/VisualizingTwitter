@@ -8,14 +8,19 @@
   </head>
 
 <h1> The Global Twitter Play Ground</h1>
-<form name="countrySearch">
-  <label for="fldWord">Where are People Tweeting The Word</label>
-    <select name="countryList" form="countrySearch" id ="countryVal">
-  <input type="submit" value="Submit">
-</form>
 
-
-<canvas id='rotatingGlobe' width='700' height='700'
-  style='width: 700px; height: 700px; cursor: move;'></canvas>
- <button type="button" id="topStream">Stop Stream</button>
-
+<div class="row">
+	<div class="row">
+		<div class="row">
+			<div class="span3 offset2">
+			<form name="countrySearch">
+  				<label for="fldWord">Select A Country</label>
+    			<select multiple="multiple" name="countryList" form="countrySearch" id ="countryVal">
+  				<input class="btn btn-success" type="submit" value="Visualize">
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+			<canvas id='rotatingGlobe' width='700' height='700'
+			  style='width: 700px; height: 700px; cursor: move;'></canvas>

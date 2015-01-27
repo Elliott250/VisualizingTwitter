@@ -6,7 +6,7 @@ var http = require('http'),
 // Define a single-page client called 'main'
 ss.client.define('main', {
   view: 'app.html',
-  css:  ['libs/reset.css', 'app.css'],
+  css:  ['libs/reset.css', 'app.css','bootstrap.min.css'],
   code: ['libs/jquery.min.js','libs/d3.v3.min.js','libs/topojson.v1.min.js','libs/planetaryjs.min.js','app','libs/tweethandle.js','libs/jquery.min.js'],
   tmpl: '*'
 });
